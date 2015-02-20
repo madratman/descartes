@@ -64,7 +64,6 @@ namespace descartes_trajectory_test
     else
     {
       rtn = false;
-      ROS_WARN("IK calculated pose, not valid");
     }
     return rtn;
   }
