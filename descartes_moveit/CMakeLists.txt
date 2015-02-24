@@ -4,6 +4,7 @@ project(descartes_moveit)
 add_definitions(-std=gnu++0x)
 find_package(catkin REQUIRED COMPONENTS
   moveit_core
+  moveit_msgs
   tf
   cmake_modules
   descartes_core
@@ -24,6 +25,7 @@ catkin_package(
     descartes_moveit
   CATKIN_DEPENDS
     moveit_core
+    moveit_msgs
     tf
     cmake_modules
     descartes_core
@@ -51,6 +53,11 @@ add_library(descartes_moveit
 target_link_libraries(descartes_moveit
                       ${catkin_LIBRARIES}
 )
+
+add_executable(descartes_cartesian_path_service
+  src/cartesian_path_service.cpp)
+target_link_libraries(descartes_cartesian_path_service
+  ${catkin_LIBRARIES})
 
 
 #############
