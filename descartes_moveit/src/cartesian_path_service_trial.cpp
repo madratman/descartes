@@ -49,39 +49,35 @@ namespace
 
 	bool cartPathService_callback(moveit_msgs::GetCartesianPath::Request &req, moveit_msgs::GetCartesianPath::Response &res)
 	{
-	    // ROS_INFO("Received request to compute Cartesian path");
- 		// context_->planning_scene_monitor_->updateFrameTransforms();
-
-		// robot_state::RobotStatePtr kinematic_state = req.start_state;
-		std::string group_name = req.group_name;
-
+	    std::string group_name = req.group_name;
+	
 	    robot_state::RobotState start_state;
 	    robot_state::robotStateMsgToRobotState(req.start_state, start_state);
 	    moveit::core::RobotModelConstPtr robot_model = robot_state->getRobotModel();
-	 	const moveit::core::JointModelGroup* joint_model_group_ptr = robot_state->getJointModelGroup(group_name);
-	 	const std::vector<std::string>& link_names = joint_model_group_ptr->getLinkModelNames();
-   		tool_frame = link_names.back();
-   		world_frame = robot_state->getRobotModel()->getModelFrame();
+	    const moveit::core::JointModelGroup* joint_model_group_ptr = robot_state->getJointModelGroup(group_name);
+	    const std::vector<std::string>& link_names = joint_model_group_ptr->getLinkModelNames();
+	    tool_frame = link_names.back();
+	    world_frame = robot_state->getRobotModel()->getModelFrame();
 
 
-		// how to get the tool_frame and world_from the GetCartesianPath srv, from waypoints?! and same for iterations?
-		//note to self: the above is done by descartes_moveit/moveit_state_adapter! Recall Shaun's email. 
-		//it takes inverse, root_to_world, etc
-		// but does it solve the problem
+	// how to get the tool_frame and world_from the GetCartesianPath srv, from waypoints?! and same for iterations?
+	//note to self: the above is done by descartes_moveit/moveit_state_adapter! Recall Shaun's email. 
+	//it takes inverse, root_to_world, etc
+	// but does it solve the problem
 
-		 //# Optional name of IK link for which waypoints are specified.
-		// # If not specified, the tip of the group (which is assumed to be a chain)
-		// # is assumed to be the link
-		// string link_name
+	 //# Optional name of IK link for which waypoints are specified.
+	// # If not specified, the tip of the group (which is assumed to be a chain)
+	// # is assumed to be the link
+	// string link_name
 
 
 
-  		descartes_core::RobotModelConstPtr robot_model = createRobotModel(start_state,
-                                                                    group_name, tool_frame, 
-                                                                    world_frame, SAMPLE_ITERATIONS);
+  	descartes_core::RobotModelConstPtr robot_model = createRobotModel(start_state,
+                                                            group_name, tool_frame, 
+                                                            world_frame, SAMPLE_ITERATIONS);
 
-	 	if (joint_model_group_ptr)
-	  	{
+ 	if (joint_model_group_ptr)
+  	{
 	    // std::string link_name = req.link_name;
 	    // if (link_name.empty() && !jmg->getLinkModelNames().empty())
 	    //   link_name = jmg->getLinkModelNames().back();
