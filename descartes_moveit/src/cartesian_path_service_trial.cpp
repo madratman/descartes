@@ -30,12 +30,7 @@ namespace
   
 	// Start a service client
 	ros::NodeHandle node_handle;
-	ros::ServiceClient service_client = node_handle.serviceClient<moveit_msgs::GetCartesianPath> ("cartesian_path_descartes");
-	while(!service_client.exists())
-	{
-	  ROS_INFO("Waiting for service");
-	  sleep(1.0);
-	}
+	ros::ServiceServer cartPathService = node_handle.advertiseService("get_cartesian_path", cartPathService_callback);
 
 	// std_msgs/Header header
 	// moveit_msgs/RobotState start_state
@@ -52,7 +47,7 @@ namespace
 	// float64 fraction
 	// moveit_msgs/MoveItErrorCodes error_code
 
-	bool descartes_moveit_trial(moveit_msgs::GetCartesianPath::Request &req, moveit_msgs::GetCartesianPath::Response &res)
+	bool cartPathService_callback(moveit_msgs::GetCartesianPath::Request &req, moveit_msgs::GetCartesianPath::Response &res)
 	{
 	    // ROS_INFO("Received request to compute Cartesian path");
  		// context_->planning_scene_monitor_->updateFrameTransforms();
@@ -176,9 +171,7 @@ namespace
 			
 		  }
 	    }
-	    else
-      	res.error_code.val = moveit_msgs::MoveItErrorCodes::FRAME_TRANSFORM_FAILURE;	
-        //TODO add suitable error
+	    //TODO add suitable error
 
 	    return true;
 	}
